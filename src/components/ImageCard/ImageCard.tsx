@@ -1,9 +1,14 @@
+import { Image } from '../types/types';
 import css from './ImageCard.module.css';
 
-const ImageCard = ({ result: { description, urls } }) => {
+type ImageCardProps = {
+  result: Image;
+};
+
+const ImageCard = ({ result: { description, urls } }: ImageCardProps) => {
   return (
     <div>
-      <img className={css.image} src={urls.small} alt={description} />
+      <img className={css.image} src={urls.small} alt={description || 'Image'} />
     </div>
   );
 };

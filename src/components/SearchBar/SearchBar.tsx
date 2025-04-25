@@ -1,14 +1,23 @@
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FormikHelpers } from 'formik';
 import toast, { Toaster } from 'react-hot-toast';
 import css from './SearchBar.module.css';
 
-const SearchBar = ({ onSubmit }) => {
+type SearchBarProps = {
+  onSubmit: (query: string) => void;
+};
+
+type InitialValues = {
+  query: string;
+};
+
+const SearchBar = ({ onSubmit }: SearchBarProps) => {
+  const initialValues: InitialValues = { query: '' };
   return (
     <>
       <header>
         <Formik
-          initialValues={{ query: '' }}
-          onSubmit={(values, actions) => {
+          initialValues={initialValues}
+          onSubmit={(values: InitialValues, actions: FormikHelpers<InitialValues>) => {
             const trimmedQuery = values.query.trim();
 
             if (!trimmedQuery) {

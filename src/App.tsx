@@ -8,18 +8,19 @@ import SearchBar from './components/SearchBar/SearchBar';
 import { useEffect, useState } from 'react';
 import fetchImages from './services/api';
 import toast from 'react-hot-toast';
+import { FetchImagesResponse, Image } from './components/types/types';
 
 function App() {
-  const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [page, setPage] = useState(1);
-  const [query, setQuery] = useState('');
-  const [totalPages, setTotalPages] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [images, setImages] = useState<Image[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const [query, setQuery] = useState<string>('');
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
-  const handleSubmit = query => {
+  const handleSubmit = (query: string) => {
     setQuery(`${query}/${Date.now()}`);
     setPage(1);
     setImages([]);
@@ -30,7 +31,7 @@ function App() {
     setPage(prevPage => prevPage + 1);
   };
 
-  const openModal = image => {
+  const openModal = (image: Image) => {
     setSelectedImage(image);
     setIsModalOpen(true);
   };
@@ -44,11 +45,11 @@ function App() {
     if (!query) {
       return;
     }
-    async function getData() {
+    async function getData(): Promise<void> {
       try {
         setError(false);
         setIsLoading(true);
-        const data = await fetchImages(query.split('/')[0], page);
+        const data: FetchImagesResponse = await fetchImages(query.split('/')[0], page);
         setImages(prevImages => {
           return [...prevImages, ...data.results];
         });

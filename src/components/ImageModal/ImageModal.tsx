@@ -1,9 +1,10 @@
-import Modal from 'react-modal';
+import Modal, { Styles } from 'react-modal';
 import css from './ImageModal.module.css';
+import { Image } from '../types/types';
 
 Modal.setAppElement('#root');
 
-const customStyles = {
+const customStyles: Styles = {
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
     zIndex: 1000,
@@ -26,14 +27,20 @@ const customStyles = {
   },
 };
 
-const ImageModal = ({ isOpen, image, onClose }) => {
+type ImageModalProps = {
+  isOpen: boolean;
+  image: Image | null;
+  onClose: () => void;
+};
+
+const ImageModal = ({ isOpen, image, onClose }: ImageModalProps) => {
   if (!image) {
     return;
   }
   return (
     <>
       <Modal isOpen={isOpen} onRequestClose={onClose} style={customStyles}>
-        <img src={image.urls.regular} alt={image.description} />
+        <img src={image.urls.regular} alt={image.description || 'Image'} />
         <p className={css.text}>{image.description}</p>
         <p className={css.text}>
           <span className={css.span}>Image by:</span> {image.user.name}
